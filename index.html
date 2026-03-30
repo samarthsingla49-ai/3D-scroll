@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alegla – Sparkling Revive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="is-loading">
+
+  <!-- ══════════════════ LOADER ══════════════════ -->
+  <div class="loader" id="loader">
+    <div class="loader-brand">Alegla</div>
+    <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
+  </div>
+
+  <!-- ══════════════════ NAVBAR ══════════════════ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Alegla</a>
+      <nav class="nav-links">
+        <a href="#flavors" class="nav-link">Flavors</a>
+        <a href="#set" class="nav-link">Alegla Set</a>
+        <a href="#benefits" class="nav-link">Benefits</a>
+      </nav>
+      <a href="#" class="btn btn--outline nav-cta">Shop Now</a>
+    </div>
+  </header>
+
+  <!-- ══════════════════ HERO ══════════════════ -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow hero-in" style="--i:0">Pure Sparkling Wellness</p>
+      <h1 class="hero-title hero-in" style="--i:1">Alegla</h1>
+      <div class="hero-sub">
+        <span class="hero-in" style="--i:2">Revive.</span>
+        <span class="hero-in" style="--i:3">Refresh.</span>
+        <span class="hero-in" style="--i:4">Rejoice.</span>
+      </div>
+      <div class="hero-actions hero-in" style="--i:5">
+        <a href="#" class="btn btn--solid">Try Now
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#flavors" class="btn btn--ghost">Explore Flavors</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="bottle-scene">
+        <div class="bottle-float hero-in" style="--i:2">
+          <svg viewBox="0 0 100 270" fill="none" class="bottle-svg" style="color:#c9f543" aria-hidden="true">
+            <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+            <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+            <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+            <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.07"/>
+            <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.05" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.25"/>
+            <text x="50" y="153" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11.5" fill="currentColor">ALEGLA</text>
+            <text x="50" y="167" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="6" fill="currentColor" opacity="0.55" letter-spacing="2.5">SPARKLING</text>
+            <circle cx="28" cy="196" r="3" fill="currentColor" opacity="0.28"/>
+            <circle cx="60" cy="215" r="2" fill="currentColor" opacity="0.22"/>
+            <circle cx="74" cy="203" r="2.5" fill="currentColor" opacity="0.18"/>
+            <circle cx="42" cy="226" r="2" fill="currentColor" opacity="0.25"/>
+            <circle cx="66" cy="190" r="1.5" fill="currentColor" opacity="0.2"/>
+            <path d="M18 96 Q21 152 19 208" stroke="white" stroke-width="3.5" stroke-opacity="0.07" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="bottle-glow"></div>
+        <div class="bottle-shadow-el"></div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-dot"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════ MARQUEE ══════════════════ -->
+  <div class="marquee-strip">
+    <div class="marquee-track" id="marqueeTrack">
+      <span>Arctic Berry</span><em>✦</em>
+      <span>Lime Ginger</span><em>✦</em>
+      <span>Elderflower</span><em>✦</em>
+      <span>Grapefruit</span><em>✦</em>
+      <span>Lemon Mint</span><em>✦</em>
+      <span>Apricot Rose</span><em>✦</em>
+      <span>Arctic Berry</span><em>✦</em>
+      <span>Lime Ginger</span><em>✦</em>
+      <span>Elderflower</span><em>✦</em>
+      <span>Grapefruit</span><em>✦</em>
+      <span>Lemon Mint</span><em>✦</em>
+      <span>Apricot Rose</span><em>✦</em>
+    </div>
+  </div>
+
+  <!-- ══════════════════ ALEGLA SCROLL SECTION ══════════════════ -->
+  <div class="alegla-scroll" id="flavors">
+    <div class="alegla-pin" id="aleglaPin">
+
+      <p class="alegla-tag">Six unique flavors</p>
+
+      <div class="alegla-row" id="aleglaRow">
+
+        <!-- A — Arctic Berry -->
+        <div class="l-col" data-idx="0">
+          <div class="l-wrap">
+            <span class="l-ghost">A</span>
+            <span class="l-fill" style="color:#c084fc">A</span>
+            <div class="l-bottle" style="color:#c084fc">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="150" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="currentColor">ALEGLA</text>
+                <text x="50" y="163" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="5.5" fill="currentColor" opacity="0.6" letter-spacing="2">SPARKLING</text>
+                <circle cx="28" cy="196" r="2.5" fill="currentColor" opacity="0.3"/>
+                <circle cx="60" cy="215" r="1.8" fill="currentColor" opacity="0.25"/>
+                <circle cx="72" cy="203" r="2" fill="currentColor" opacity="0.2"/>
+                <path d="M18 96 Q21 150 19 205" stroke="white" stroke-width="3" stroke-opacity="0.06" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="l-info">
+            <span class="l-name">Arctic Berry</span>
+            <span class="l-ml">330 ml</span>
+          </div>
+        </div>
+
+        <!-- L — Lime Ginger -->
+        <div class="l-col" data-idx="1">
+          <div class="l-wrap">
+            <span class="l-ghost">L</span>
+            <span class="l-fill" style="color:#a3e635">L</span>
+            <div class="l-bottle" style="color:#a3e635">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="150" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="currentColor">ALEGLA</text>
+                <text x="50" y="163" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="5.5" fill="currentColor" opacity="0.6" letter-spacing="2">SPARKLING</text>
+                <circle cx="30" cy="195" r="2.5" fill="currentColor" opacity="0.3"/>
+                <circle cx="58" cy="218" r="1.8" fill="currentColor" opacity="0.25"/>
+                <circle cx="70" cy="206" r="2" fill="currentColor" opacity="0.2"/>
+                <path d="M18 96 Q21 150 19 205" stroke="white" stroke-width="3" stroke-opacity="0.06" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="l-info">
+            <span class="l-name">Lime Ginger</span>
+            <span class="l-ml">330 ml</span>
+          </div>
+        </div>
+
+        <!-- E — Elderflower -->
+        <div class="l-col" data-idx="2">
+          <div class="l-wrap">
+            <span class="l-ghost">E</span>
+            <span class="l-fill" style="color:#fbbf24">E</span>
+            <div class="l-bottle" style="color:#fbbf24">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="150" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="currentColor">ALEGLA</text>
+                <text x="50" y="163" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="5.5" fill="currentColor" opacity="0.6" letter-spacing="2">SPARKLING</text>
+                <circle cx="32" cy="197" r="2.5" fill="currentColor" opacity="0.3"/>
+                <circle cx="62" cy="216" r="1.8" fill="currentColor" opacity="0.25"/>
+                <circle cx="74" cy="200" r="2" fill="currentColor" opacity="0.2"/>
+                <path d="M18 96 Q21 150 19 205" stroke="white" stroke-width="3" stroke-opacity="0.06" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="l-info">
+            <span class="l-name">Elderflower</span>
+            <span class="l-ml">330 ml</span>
+          </div>
+        </div>
+
+        <!-- G — Grapefruit -->
+        <div class="l-col" data-idx="3">
+          <div class="l-wrap">
+            <span class="l-ghost">G</span>
+            <span class="l-fill" style="color:#f97316">G</span>
+            <div class="l-bottle" style="color:#f97316">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="150" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="currentColor">ALEGLA</text>
+                <text x="50" y="163" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="5.5" fill="currentColor" opacity="0.6" letter-spacing="2">SPARKLING</text>
+                <circle cx="27" cy="194" r="2.5" fill="currentColor" opacity="0.3"/>
+                <circle cx="56" cy="213" r="1.8" fill="currentColor" opacity="0.25"/>
+                <circle cx="70" cy="200" r="2" fill="currentColor" opacity="0.2"/>
+                <path d="M18 96 Q21 150 19 205" stroke="white" stroke-width="3" stroke-opacity="0.06" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="l-info">
+            <span class="l-name">Grapefruit</span>
+            <span class="l-ml">330 ml</span>
+          </div>
+        </div>
+
+        <!-- L — Lemon Mint -->
+        <div class="l-col" data-idx="4">
+          <div class="l-wrap">
+            <span class="l-ghost">L</span>
+            <span class="l-fill" style="color:#34d399">L</span>
+            <div class="l-bottle" style="color:#34d399">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="150" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="currentColor">ALEGLA</text>
+                <text x="50" y="163" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="5.5" fill="currentColor" opacity="0.6" letter-spacing="2">SPARKLING</text>
+                <circle cx="29" cy="195" r="2.5" fill="currentColor" opacity="0.3"/>
+                <circle cx="61" cy="217" r="1.8" fill="currentColor" opacity="0.25"/>
+                <circle cx="73" cy="202" r="2" fill="currentColor" opacity="0.2"/>
+                <path d="M18 96 Q21 150 19 205" stroke="white" stroke-width="3" stroke-opacity="0.06" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="l-info">
+            <span class="l-name">Lemon Mint</span>
+            <span class="l-ml">330 ml</span>
+          </div>
+        </div>
+
+        <!-- A — Apricot Rose -->
+        <div class="l-col" data-idx="5">
+          <div class="l-wrap">
+            <span class="l-ghost">A</span>
+            <span class="l-fill" style="color:#fb7185">A</span>
+            <div class="l-bottle" style="color:#fb7185">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="150" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="10" fill="currentColor">ALEGLA</text>
+                <text x="50" y="163" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="5.5" fill="currentColor" opacity="0.6" letter-spacing="2">SPARKLING</text>
+                <circle cx="31" cy="196" r="2.5" fill="currentColor" opacity="0.3"/>
+                <circle cx="63" cy="214" r="1.8" fill="currentColor" opacity="0.25"/>
+                <circle cx="75" cy="201" r="2" fill="currentColor" opacity="0.2"/>
+                <path d="M18 96 Q21 150 19 205" stroke="white" stroke-width="3" stroke-opacity="0.06" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="l-info">
+            <span class="l-name">Apricot Rose</span>
+            <span class="l-ml">330 ml</span>
+          </div>
+        </div>
+
+      </div><!-- .alegla-row -->
+
+      <div class="alegla-progress-track">
+        <div class="alegla-progress-fill" id="aleglaProgress"></div>
+      </div>
+
+    </div><!-- .alegla-pin -->
+  </div><!-- .alegla-scroll -->
+
+  <!-- ══════════════════ PRODUCTS ══════════════════ -->
+  <section class="products" id="set">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-tag reveal">Our Collection</p>
+        <h2 class="reveal">Alegla Set</h2>
+        <p class="section-desc reveal">Curated for every occasion. Six flavors, one obsession.</p>
+      </div>
+
+      <div class="cards-grid">
+
+        <div class="product-card reveal" data-delay="0">
+          <div class="card-visual">
+            <div class="card-bg" style="background:radial-gradient(ellipse at 50% 80%,rgba(192,132,252,.25) 0%,transparent 70%),#100920"></div>
+            <div class="card-bottle" style="color:#c084fc">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="153" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11.5" fill="currentColor">ALEGLA</text>
+                <text x="50" y="167" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="6" fill="currentColor" opacity="0.55" letter-spacing="2.5">SPARKLING</text>
+                <circle cx="28" cy="196" r="3" fill="currentColor" opacity="0.28"/>
+                <circle cx="60" cy="215" r="2" fill="currentColor" opacity="0.22"/>
+                <circle cx="74" cy="203" r="2.5" fill="currentColor" opacity="0.18"/>
+                <path d="M18 96 Q21 152 19 208" stroke="white" stroke-width="3.5" stroke-opacity="0.07" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="card-shine"></div>
+          </div>
+          <div class="card-body">
+            <h3>Arctic Berry</h3>
+            <p>Wild chokeberry kombucha. Deep antioxidant richness in every sip.</p>
+            <div class="card-tags">
+              <span>Fermented</span><span>Unpasteurized</span><span>Non-alcoholic</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-vol">330 ml</span>
+              <a href="#" class="btn btn--sm">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-delay="120">
+          <div class="card-visual">
+            <div class="card-bg" style="background:radial-gradient(ellipse at 50% 80%,rgba(163,230,53,.2) 0%,transparent 70%),#061200"></div>
+            <div class="card-bottle" style="color:#a3e635">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="153" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11.5" fill="currentColor">ALEGLA</text>
+                <text x="50" y="167" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="6" fill="currentColor" opacity="0.55" letter-spacing="2.5">SPARKLING</text>
+                <circle cx="30" cy="195" r="3" fill="currentColor" opacity="0.28"/>
+                <circle cx="58" cy="218" r="2" fill="currentColor" opacity="0.22"/>
+                <path d="M18 96 Q21 152 19 208" stroke="white" stroke-width="3.5" stroke-opacity="0.07" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="card-shine"></div>
+          </div>
+          <div class="card-body">
+            <h3>Lime Ginger</h3>
+            <p>Zesty lime meets warming ginger. A bold, refreshing duo.</p>
+            <div class="card-tags">
+              <span>Fermented</span><span>Ginger Extract</span><span>Non-alcoholic</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-vol">330 ml</span>
+              <a href="#" class="btn btn--sm">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card reveal" data-delay="240">
+          <div class="card-visual">
+            <div class="card-bg" style="background:radial-gradient(ellipse at 50% 80%,rgba(251,113,36,.18) 0%,transparent 70%),#120800"></div>
+            <div class="card-bottle" style="color:#f97316">
+              <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+                <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+                <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+                <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.1"/>
+                <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.3"/>
+                <text x="50" y="153" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11.5" fill="currentColor">ALEGLA</text>
+                <text x="50" y="167" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="6" fill="currentColor" opacity="0.55" letter-spacing="2.5">SPARKLING</text>
+                <circle cx="27" cy="194" r="3" fill="currentColor" opacity="0.28"/>
+                <circle cx="56" cy="213" r="2" fill="currentColor" opacity="0.22"/>
+                <path d="M18 96 Q21 152 19 208" stroke="white" stroke-width="3.5" stroke-opacity="0.07" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="card-shine"></div>
+          </div>
+          <div class="card-body">
+            <h3>Grapefruit</h3>
+            <p>Bittersweet citrus burst. Wake up your senses every morning.</p>
+            <div class="card-tags">
+              <span>Fermented</span><span>Citrus Extract</span><span>Non-alcoholic</span>
+            </div>
+            <div class="card-footer">
+              <span class="card-vol">330 ml</span>
+              <a href="#" class="btn btn--sm">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- .cards-grid -->
+    </div>
+  </section>
+
+  <!-- ══════════════════ BENEFITS ══════════════════ -->
+  <section class="benefits" id="benefits">
+    <div class="container benefits-inner">
+
+      <div class="benefits-text">
+        <p class="section-tag reveal">Why Alegla</p>
+        <h2 class="reveal">Live Happy<br/>Drink Healthy</h2>
+        <p class="reveal">Organic raw kombucha at its finest. No shortcuts, no artificial nonsense — just pure fermented goodness.</p>
+        <div class="benefits-items">
+          <div class="benefit-row reveal" data-delay="0">
+            <div class="benefit-icon">⚡</div>
+            <div>
+              <h4>Certified Organic</h4>
+              <p>Every ingredient meets the strictest organic standards.</p>
+            </div>
+          </div>
+          <div class="benefit-row reveal" data-delay="100">
+            <div class="benefit-icon">🌿</div>
+            <div>
+              <h4>Live Cultures</h4>
+              <p>Rich in beneficial probiotics to support gut health naturally.</p>
+            </div>
+          </div>
+          <div class="benefit-row reveal" data-delay="200">
+            <div class="benefit-icon">♻️</div>
+            <div>
+              <h4>Eco-Friendly</h4>
+              <p>Carbon neutral operations, fully recyclable packaging.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="benefits-visual reveal">
+        <div class="benefits-ring-scene">
+          <div class="b-ring b-ring-1"></div>
+          <div class="b-ring b-ring-2"></div>
+          <div class="b-ring b-ring-3"></div>
+          <div class="benefits-bottle-3d" style="color:#a3e635">
+            <svg viewBox="0 0 100 270" fill="none" aria-hidden="true">
+              <rect x="37" y="2" width="26" height="10" rx="4" fill="currentColor"/>
+              <path d="M37 12 L33 25 L27 42 L73 42 L67 25 L63 12 Z" fill="currentColor" opacity="0.75"/>
+              <path d="M27 42 Q10 62 10 86 L90 86 Q90 62 73 42 Z" fill="currentColor" opacity="0.45"/>
+              <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" fill="currentColor" opacity="0.07"/>
+              <path d="M10 86 L10 244 Q10 260 50 260 Q90 260 90 244 L90 86 Z" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="16" y="110" width="68" height="96" rx="3" fill="currentColor" opacity="0.05" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.25"/>
+              <text x="50" y="153" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="11.5" fill="currentColor">ALEGLA</text>
+              <text x="50" y="167" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="6" fill="currentColor" opacity="0.55" letter-spacing="2.5">SPARKLING</text>
+              <circle cx="28" cy="196" r="3" fill="currentColor" opacity="0.28"/>
+              <circle cx="60" cy="215" r="2" fill="currentColor" opacity="0.22"/>
+              <circle cx="74" cy="203" r="2.5" fill="currentColor" opacity="0.18"/>
+              <path d="M18 96 Q21 152 19 208" stroke="white" stroke-width="3.5" stroke-opacity="0.07" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════ STATS ══════════════════ -->
+  <div class="stats-band">
+    <div class="container stats-grid">
+      <div class="stat reveal">
+        <div class="stat-val"><span class="count" data-target="100">0</span>%</div>
+        <p>Organic Ingredients</p>
+      </div>
+      <div class="stat reveal" data-delay="80">
+        <div class="stat-val"><span class="count" data-target="6">0</span></div>
+        <p>Unique Flavors</p>
+      </div>
+      <div class="stat reveal" data-delay="160">
+        <div class="stat-val"><span class="count" data-target="330">0</span>ml</div>
+        <p>Perfect Serving</p>
+      </div>
+      <div class="stat reveal" data-delay="240">
+        <div class="stat-val"><span class="count" data-target="0">0</span>%</div>
+        <p>Artificial Additives</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ CTA ══════════════════ -->
+  <section class="cta-section">
+    <div class="cta-bg">
+      <div class="cta-orb cta-orb-1"></div>
+      <div class="cta-orb cta-orb-2"></div>
+    </div>
+    <div class="container cta-inner">
+      <p class="section-tag reveal">Ready to revive?</p>
+      <h2 class="cta-heading reveal">Why not try<br/><em>right now?</em></h2>
+      <p class="reveal">Be among the first to experience the full Alegla range.</p>
+      <a href="#" class="btn btn--solid btn--lg reveal">Shop the Collection →</a>
+    </div>
+  </section>
+
+  <!-- ══════════════════ FOOTER ══════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Alegla</span>
+        <p>Sparkling revive of your health.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="#flavors">Flavors</a>
+        <a href="#set">Alegla Set</a>
+        <a href="#benefits">Benefits</a>
+      </nav>
+      <a href="#" class="btn btn--outline">Try Now</a>
+    </div>
+    <div class="footer-bar">
+      <p>© 2024 Alegla. All rights reserved. Crafted with care.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
