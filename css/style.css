@@ -197,8 +197,6 @@ h3 { font-family: 'Space Grotesk', sans-serif;
   align-items: flex-end; justify-content: center; height: 100%;
 }
 .hero-bottle-img {
-  /* mix-blend-mode removes the photo's gray background on the green hero */
-  mix-blend-mode: multiply;
   width: clamp(180px, 22vw, 300px);
   object-fit: contain;
   transform-origin: bottom center;
@@ -318,7 +316,6 @@ h3 { font-family: 'Space Grotesk', sans-serif;
 }
 .l-bottle img {
   width: 100%; height: auto; object-fit: contain;
-  mix-blend-mode: multiply;  /* blends photo bg into cream */
   filter: drop-shadow(0 8px 16px rgba(0,0,0,.2));
 }
 
@@ -361,7 +358,6 @@ h3 { font-family: 'Space Grotesk', sans-serif;
 .about-bottle-img {
   width: 220px; margin: 0 auto;
   filter: drop-shadow(0 32px 48px rgba(0,0,0,.15));
-  mix-blend-mode: multiply;
   transform: rotate(-4deg);
   transition: transform .5s var(--ease);
 }
@@ -412,7 +408,6 @@ h3 { font-family: 'Space Grotesk', sans-serif;
 .card-bottle-img {
   position: relative; z-index: 1;
   width: 100px; object-fit: contain;
-  mix-blend-mode: multiply;
   filter: drop-shadow(0 16px 32px rgba(0,0,0,.18));
   transform-origin: bottom center;
   transition: transform .45s var(--ease);
@@ -470,7 +465,6 @@ h3 { font-family: 'Space Grotesk', sans-serif;
 .benefits-bottle-img {
   width: 160px; object-fit: contain;
   filter: drop-shadow(0 30px 50px rgba(0,0,0,.4));
-  mix-blend-mode: luminosity;
   animation: heroFloat 7s ease-in-out infinite;
 }
 
@@ -511,7 +505,7 @@ h3 { font-family: 'Space Grotesk', sans-serif;
   justify-content: center; margin: 20px 0 10px;
 }
 .cta-bottle-small {
-  width: 60px; object-fit: contain; mix-blend-mode: multiply;
+  width: 60px; object-fit: contain;
   filter: drop-shadow(0 8px 16px rgba(0,0,0,.12));
   transform-origin: bottom;
 }
