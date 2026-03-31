@@ -20,7 +20,7 @@ ScrollTrigger.config({ fastScrollEnd: true, preventOverlaps: true });
    ───────────────────────────────────────────── */
 function initSmoothScroll() {
   if (typeof Lenis === 'undefined') return;
-  const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+  const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
   gsap.ticker.add(t => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
   lenis.on('scroll', ScrollTrigger.update);
@@ -126,12 +126,6 @@ function initAleglaSection() {
 
         fill.style.clipPath = `inset(0 0 ${((1 - lp) * 100).toFixed(2)}% 0)`;
 
-        if (lp > 0.05) {
-          fill.style.filter = `drop-shadow(0 0 ${(lp * 20).toFixed(1)}px currentColor)`;
-        } else {
-          fill.style.filter = 'none';
-        }
-
         const by = (1 - lp) * 130 + lp * 8;
         bottle.style.transform = `translateX(-50%) translateY(${by.toFixed(2)}%)`;
         bottle.style.opacity   = Math.min(1, lp * 1.8).toFixed(3);
@@ -161,21 +155,26 @@ function initAleglaTag() {
    ───────────────────────────────────────────── */
 function initCardTilt() {
   document.querySelectorAll('.product-card').forEach(card => {
+    let rect;
+    // Cache rect on enter — avoids forced layout on every mousemove
+    card.addEventListener('mouseenter', () => { rect = card.getBoundingClientRect(); });
+
     card.addEventListener('mousemove', (e) => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width  - 0.5;
-      const y = (e.clientY - r.top)  / r.height - 0.5;
+      if (!rect) return;
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
       gsap.to(card, {
-        rotateX          : -y * 14,
-        rotateY          :  x * 14,
+        rotateX             : -y * 14,
+        rotateY             :  x * 14,
         transformPerspective: 700,
-        duration         : 0.35,
-        ease             : 'power2.out',
-        overwrite        : 'auto',
+        duration            : 0.35,
+        ease                : 'power2.out',
+        overwrite           : 'auto',
       });
     });
 
     card.addEventListener('mouseleave', () => {
+      rect = null;
       gsap.to(card, {
         rotateX: 0, rotateY: 0,
         duration: 0.55, ease: 'power3.out', overwrite: 'auto',
@@ -188,16 +187,16 @@ function initCardTilt() {
    6. SCROLL REVEALS
    ───────────────────────────────────────────── */
 function initReveal() {
-  document.querySelectorAll('.reveal').forEach(el => {
-    const delay = parseFloat(el.dataset.delay || 0) / 1000;
-    gsap.to(el, {
-      y: 0, opacity: 1, duration: 0.8, delay, ease: 'power3.out',
-      scrollTrigger: {
-        trigger     : el,
-        start       : 'top 87%',
-        toggleActions: 'play none none reverse',
-      }
-    });
+  // ScrollTrigger.batch shares one IntersectionObserver for all .reveal elements
+  // instead of one ScrollTrigger per element — far more efficient
+  ScrollTrigger.batch('.reveal', {
+    start   : 'top 88%',
+    onEnter : batch => gsap.to(batch, {
+      y: 0, opacity: 1, duration: 0.75, ease: 'power3.out', stagger: 0.06, overwrite: true
+    }),
+    onLeaveBack: batch => gsap.to(batch, {
+      y: 48, opacity: 0, duration: 0.4, ease: 'power2.in', stagger: 0.04, overwrite: true
+    }),
   });
 }
 
@@ -233,7 +232,9 @@ function initMarquee() {
    9. PARALLAX
    ───────────────────────────────────────────── */
 function initParallax() {
-  gsap.to('.benefits-bottle-img', {
+  // Parallax on WRAPPER — keeps CSS float animation on the img itself
+  // separate from GSAP scroll-driven y, preventing transform conflict
+  gsap.to('.b-bottle-wrap', {
     y: -50, ease: 'none',
     scrollTrigger: {
       trigger: '.benefits',
@@ -254,11 +255,23 @@ function initParallax() {
    10. HERO BOTTLE SCROLL EFFECT
    ───────────────────────────────────────────── */
 function initHeroScroll() {
-  gsap.to('.hero-bottle-img', {
+  // Scroll parallax on wrapper so CSS float on .hero-bottle-img is not overridden
+  gsap.to('.hero-bottle-wrap', {
     y: -60, ease: 'none',
     scrollTrigger: {
       trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true
     }
+  });
+}
+
+function initBottleFloat() {
+  // GSAP-driven float replaces CSS @keyframes heroFloat to avoid
+  // transform conflicts when GSAP also controls y on the same element
+  gsap.to('.hero-bottle-img', {
+    y: -18, duration: 3, ease: 'sine.inOut', repeat: -1, yoyo: true
+  });
+  gsap.to('.benefits-bottle-img', {
+    y: -14, duration: 3.5, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.4
   });
 }
 
@@ -361,6 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initParallax();
   initHeroScroll();
   initCtaBottles();
+  initBottleFloat();      // GSAP float (no CSS animation conflict)
   initHorizontalScroll(); // UPGRADE 3
   initHeadingReveal();    // UPGRADE 4
   initAnchors();
