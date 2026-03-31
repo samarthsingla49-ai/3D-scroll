@@ -1,272 +1,218 @@
 /* ══════════════════════════════════════════════
-   ALEGLA — main.js
-   3D Scroll Animations (GSAP + ScrollTrigger)
-   Inspired by KMBCH Webflow site analysis
+   ALEGLA — main.js  (GSAP Enhanced)
+   ──────────────────────────────────────────────
+   GSAP Upgrades:
+   1. Lenis smooth scroll wired into ScrollTrigger
+   2. Hero title split-character entrance timeline
+   3. Products horizontal scroll (ScrollTrigger pin)
+   4. Section h2 word-clip reveal
+   5. Dramatic two-panel loader exit
    ══════════════════════════════════════════════ */
 
 gsap.registerPlugin(ScrollTrigger);
 
+ScrollTrigger.config({ fastScrollEnd: true, preventOverlaps: true });
+
 /* ─────────────────────────────────────────────
-   1. PAGE LOADER
+   UPGRADE 1 — LENIS SMOOTH SCROLL
+   Feeds Lenis ticks into GSAP's RAF so
+   ScrollTrigger positions stay accurate.
+   ───────────────────────────────────────────── */
+function initSmoothScroll() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+  lenis.on('scroll', ScrollTrigger.update);
+}
+
+/* ─────────────────────────────────────────────
+   UPGRADE 5 — LOADER (two-panel split exit)
    ───────────────────────────────────────────── */
 function initLoader() {
-  const loader   = document.getElementById('loader');
-  const loaderFill = document.getElementById('loaderFill');
+  const loader = document.getElementById('loader');
+  const fill   = document.getElementById('loaderFill');
 
-  // Animate progress bar to full
-  gsap.to(loaderFill, {
-    scaleX: 1,
-    duration: 1.4,
-    ease: 'power2.inOut',
-    onComplete: () => {
-      // Slide loader up and out
-      gsap.to(loader, {
-        yPercent: -100,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.in',
-        onComplete: () => {
-          loader.remove();
-          document.body.classList.remove('is-loading');
-          // Fire hero entrance after loader exits
-          initHeroEntrance();
-          initAleglaTag();
-        }
-      });
+  const tl = gsap.timeline({
+    onComplete() {
+      loader.remove();
+      document.body.classList.remove('is-loading');
+      initHeroEntrance();
+      initAleglaTag();
     }
   });
+
+  tl.to(fill, { scaleX: 1, duration: 1.2, ease: 'power2.inOut' })
+    .to('.loader-panel-l', { xPercent: -100, duration: 0.7, ease: 'power3.in' }, '+=0.05')
+    .to('.loader-panel-r', { xPercent:  100, duration: 0.7, ease: 'power3.in' }, '<');
 }
 
 /* ─────────────────────────────────────────────
-   2. HERO ENTRANCE ANIMATION
-   Key technique from KMBCH:
-   Elements start at translate3d(40px,0,0) opacity:0
-   and animate to translate3d(0,0,0) opacity:1 with stagger
+   UPGRADE 2 — HERO SPLIT-CHARACTER ENTRANCE
+   Each word span is split into .ch character
+   spans, then animated with a staggered timeline.
    ───────────────────────────────────────────── */
 function initHeroEntrance() {
-  // Collect hero-in elements and sort by their --i CSS variable
-  const heroEls = [...document.querySelectorAll('.hero-in')].sort((a, b) => {
-    const ai = parseInt(a.style.getPropertyValue('--i')) || 0;
-    const bi = parseInt(b.style.getPropertyValue('--i')) || 0;
-    return ai - bi;
+  // Split each .hero-word span into individual character spans
+  document.querySelectorAll('.hero-word').forEach(el => {
+    const text = el.textContent;
+    el.innerHTML = [...text].map(c =>
+      `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`
+    ).join('');
   });
 
-  gsap.to(heroEls, {
-    x: 0,
-    opacity: 1,
-    // Full transform reset — same pattern as KMBCH ix2
-    transform: 'translate3d(0,0,0) scale3d(1,1,1) rotateX(0deg) rotateY(0deg) rotateZ(0deg)',
-    stagger: 0.11,
-    duration: 0.95,
-    ease: 'power3.out',
-  });
+  // Set explicit initial states (GSAP owns the state — no CSS opacity:0 conflict)
+  gsap.set('.hero-eyebrow',    { opacity: 0, y: 24 });
+  gsap.set('.ch',              { opacity: 0, y: 90 });
+  gsap.set('.hero-sub',        { opacity: 0, y: 24 });
+  gsap.set('.hero-actions',    { opacity: 0, y: 24 });
+  gsap.set('.hero-bottle-wrap',{ opacity: 0, scale: 0.82 });
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  tl.to('.hero-eyebrow',    { y: 0, opacity: 1, duration: 0.55 })
+    .to('.ch',              { y: 0, opacity: 1, stagger: 0.022, duration: 0.65 }, '-=0.25')
+    .to('.hero-sub',        { y: 0, opacity: 1, duration: 0.55 }, '-=0.35')
+    .to('.hero-actions',    { y: 0, opacity: 1, duration: 0.5  }, '-=0.3')
+    .to('.hero-bottle-wrap',{ scale: 1, opacity: 1, duration: 1.1, ease: 'power2.out' }, '-=0.9');
 }
 
 /* ─────────────────────────────────────────────
-   3. NAVBAR SCROLL BEHAVIOR
-   Background-color transition on scroll
-   (same pattern as KMBCH navbar data-w-id animation)
+   3. NAVBAR: transparent → white on scroll
    ───────────────────────────────────────────── */
 function initNavbar() {
-  const navbar = document.getElementById('navbar');
-
+  const nav = document.getElementById('navbar');
   ScrollTrigger.create({
-    start: 'top -80px',
-    onUpdate: (self) => {
-      navbar.classList.toggle('scrolled', self.progress > 0);
-    }
+    start: 'top -60px',
+    onUpdate(self) { nav.classList.toggle('scrolled', self.progress > 0); }
   });
 }
 
 /* ─────────────────────────────────────────────
    4. ALEGLA LETTERS SCROLL SECTION
-   ────────────────────────────────────────────
-   The star animation — mirrors KMBCH's sticky
-   kmbch-section with scroll-linked Lottie.
-
-   How it works:
-   • Section is 600vh tall
-   • Inner .alegla-pin is position:sticky (pins for full scroll)
-   • ScrollTrigger scrub maps scroll progress 0→1
-   • For each of 6 letters (A,L,E,G,L,A):
-       - localProgress = how far this letter is through its activation window
-       - .l-fill  → clip-path: inset(0 0 X% 0) reveals color from bottom up
-       - .l-bottle → translateY from +120% to 0% (rises into letter)
-       - .l-info  → fades + slides in
-       - .l-ghost → subtle scale
    ───────────────────────────────────────────── */
 function initAleglaSection() {
   const wrapper  = document.querySelector('.alegla-scroll');
   const pin      = document.getElementById('aleglaPin');
   const cols     = document.querySelectorAll('.l-col');
   const progress = document.getElementById('aleglaProgress');
-
   if (!wrapper || !pin) return;
 
-  // Each letter activates in a staggered window across the scroll
-  // Overlap windows slightly so multiple letters animate simultaneously
-  const STEP     = 0.13;   // spacing between each letter's start
-  const DURATION = 0.26;   // how much scroll each letter uses to complete
+  const STEP = 0.14;
+  const DUR  = 0.25;
+  let lastP = -1;
 
   ScrollTrigger.create({
     trigger : wrapper,
     start   : 'top top',
     end     : 'bottom bottom',
     pin     : pin,
-    scrub   : 1.5,    // lag for buttery-smooth feel
-    onUpdate: (self) => {
+    scrub   : 1,
+    onUpdate(self) {
       const p = self.progress;
+      if (Math.abs(p - lastP) < 0.0005) return;
+      lastP = p;
 
-      // Update the bottom progress bar
-      progress.style.transform = `scaleX(${p})`;
+      progress.style.transform = `scaleX(${p.toFixed(4)})`;
 
       cols.forEach((col, i) => {
         const start  = i * STEP;
-        const end    = start + DURATION;
-        // localP: 0 = not started, 1 = fully revealed
-        const localP = Math.max(0, Math.min(1, (p - start) / (end - start)));
+        const end    = start + DUR;
+        const lp     = Math.max(0, Math.min(1, (p - start) / (end - start)));
 
         const fill   = col.querySelector('.l-fill');
         const bottle = col.querySelector('.l-bottle');
         const info   = col.querySelector('.l-info');
         const ghost  = col.querySelector('.l-ghost');
 
-        // ── Letter color fill: clip-path reveals from bottom up ──
-        // inset(0 0 X% 0) → X% = distance from bottom that stays clipped
-        // Start: X=100% (nothing shown), End: X=0% (all shown)
-        const clip = (1 - localP) * 100;
-        fill.style.clipPath = `inset(0 0 ${clip.toFixed(2)}% 0)`;
+        fill.style.clipPath = `inset(0 0 ${((1 - lp) * 100).toFixed(2)}% 0)`;
 
-        // Add a glow to filled text as it reveals
-        const color = fill.style.color;
-        fill.style.textShadow = localP > 0.1
-          ? `0 0 ${localP * 40}px ${color}40`
-          : 'none';
+        const by = (1 - lp) * 130 + lp * 8;
+        bottle.style.transform = `translateX(-50%) translateY(${by.toFixed(2)}%)`;
+        bottle.style.opacity   = Math.min(1, lp * 1.8).toFixed(3);
 
-        // ── Bottle rises from below into the letter ──
-        // start: translateY(120%) — well below letter container
-        // end: translateY(5%) — sitting nicely inside the letter
-        const bottleY = (1 - localP) * 120 + (localP * 5);
-        bottle.style.transform = `translateX(-50%) translateY(${bottleY.toFixed(2)}%)`;
-        bottle.style.opacity   = Math.min(1, localP * 2).toFixed(3); // fast fade-in
+        info.style.opacity   = lp.toFixed(3);
+        info.style.transform = `translateY(${((1 - lp) * 14).toFixed(2)}px)`;
 
-        // ── Flavor info label ──
-        const infoY = (1 - localP) * 16;
-        info.style.opacity   = localP.toFixed(3);
-        info.style.transform = `translateY(${infoY.toFixed(2)}px)`;
-
-        // ── Ghost letter subtle scale when active ──
-        const scale = 1 + localP * 0.04;
-        ghost.style.transform = `scale(${scale.toFixed(4)})`;
+        ghost.style.transform = `scale(${(1 + lp * 0.04).toFixed(4)})`;
       });
     }
   });
 }
 
 function initAleglaTag() {
-  // Reveal the "Six unique flavors" tag when section enters viewport
   const tag = document.querySelector('.alegla-tag');
   if (!tag) return;
-
   ScrollTrigger.create({
-    trigger : '.alegla-scroll',
-    start   : 'top 70%',
-    onEnter : () => tag.classList.add('visible'),
-    onLeaveBack: () => tag.classList.remove('visible'),
+    trigger     : '.alegla-scroll',
+    start       : 'top 75%',
+    onEnter     : () => tag.classList.add('visible'),
+    onLeaveBack : () => tag.classList.remove('visible'),
   });
 }
 
 /* ─────────────────────────────────────────────
-   5. PRODUCT CARD 3D MOUSE TILT
-   True CSS 3D perspective transform on hover
-   (rotateX + rotateY based on mouse position)
+   5. PRODUCT CARD 3D TILT
    ───────────────────────────────────────────── */
 function initCardTilt() {
   document.querySelectorAll('.product-card').forEach(card => {
-    let rafId = null;
-    let targetRX = 0, targetRY = 0, currentRX = 0, currentRY = 0;
-    let isHovered = false;
-
-    card.addEventListener('mouseenter', () => {
-      isHovered = true;
-      card.style.transition = 'transform 0.1s ease, border-color 0.3s ease';
-    });
+    let rect;
+    // Cache rect on enter — avoids forced layout on every mousemove
+    card.addEventListener('mouseenter', () => { rect = card.getBoundingClientRect(); });
 
     card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width  - 0.5; // -0.5 to 0.5
+      if (!rect) return;
+      const x = (e.clientX - rect.left) / rect.width  - 0.5;
       const y = (e.clientY - rect.top)  / rect.height - 0.5;
-      targetRX = -y * 16;  // tilt up/down
-      targetRY =  x * 16;  // tilt left/right
+      gsap.to(card, {
+        rotateX             : -y * 14,
+        rotateY             :  x * 14,
+        transformPerspective: 700,
+        duration            : 0.35,
+        ease                : 'power2.out',
+        overwrite           : 'auto',
+      });
     });
 
     card.addEventListener('mouseleave', () => {
-      isHovered = false;
-      targetRX = 0; targetRY = 0;
-      card.style.transition = 'transform 0.6s var(--ease-out), border-color 0.3s ease';
+      rect = null;
+      gsap.to(card, {
+        rotateX: 0, rotateY: 0,
+        duration: 0.55, ease: 'power3.out', overwrite: 'auto',
+      });
     });
-
-    // Smooth lerp loop
-    (function loop() {
-      rafId = requestAnimationFrame(loop);
-      currentRX += (targetRX - currentRX) * 0.12;
-      currentRY += (targetRY - currentRY) * 0.12;
-
-      if (!isHovered && Math.abs(currentRX) < 0.01 && Math.abs(currentRY) < 0.01) {
-        currentRX = 0; currentRY = 0;
-      }
-
-      card.style.transform = `
-        perspective(700px)
-        rotateX(${currentRX.toFixed(3)}deg)
-        rotateY(${currentRY.toFixed(3)}deg)
-        translateZ(${isHovered ? 12 : 0}px)
-      `;
-    })();
   });
 }
 
 /* ─────────────────────────────────────────────
-   6. SCROLL REVEAL (all .reveal elements)
-   translate3d(0, 52px, 0) + opacity:0 → natural position
+   6. SCROLL REVEALS
    ───────────────────────────────────────────── */
 function initReveal() {
-  document.querySelectorAll('.reveal').forEach(el => {
-    const delay = parseFloat(el.dataset.delay || 0) / 1000;
-
-    gsap.to(el, {
-      y: 0,
-      opacity: 1,
-      duration: 0.85,
-      delay,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger          : el,
-        start            : 'top 86%',
-        toggleActions    : 'play none none reverse',
-      }
-    });
+  // ScrollTrigger.batch shares one IntersectionObserver for all .reveal elements
+  // instead of one ScrollTrigger per element — far more efficient
+  ScrollTrigger.batch('.reveal', {
+    start   : 'top 88%',
+    onEnter : batch => gsap.to(batch, {
+      y: 0, opacity: 1, duration: 0.75, ease: 'power3.out', stagger: 0.06, overwrite: true
+    }),
+    onLeaveBack: batch => gsap.to(batch, {
+      y: 48, opacity: 0, duration: 0.4, ease: 'power2.in', stagger: 0.04, overwrite: true
+    }),
   });
 }
 
 /* ─────────────────────────────────────────────
-   7. ANIMATED STAT COUNTERS
+   7. STAT COUNTERS
    ───────────────────────────────────────────── */
 function initCounters() {
   document.querySelectorAll('.count').forEach(el => {
     const target = parseInt(el.dataset.target, 10);
-
     ScrollTrigger.create({
-      trigger : el,
-      start   : 'top 85%',
-      once    : true,
-      onEnter : () => {
-        const obj = { val: 0 };
+      trigger: el, start: 'top 85%', once: true,
+      onEnter() {
+        const obj = { v: 0 };
         gsap.to(obj, {
-          val     : target,
-          duration: 1.8,
-          ease    : 'power2.out',
-          onUpdate: () => { el.textContent = Math.round(obj.val); }
+          v: target, duration: 1.8, ease: 'power2.out',
+          onUpdate() { el.textContent = Math.round(obj.v); }
         });
       }
     });
@@ -274,126 +220,166 @@ function initCounters() {
 }
 
 /* ─────────────────────────────────────────────
-   8. MARQUEE (infinite scroll strip)
+   8. MARQUEE (infinite)
    ───────────────────────────────────────────── */
 function initMarquee() {
   const track = document.getElementById('marqueeTrack');
   if (!track) return;
-
-  // The track has 12 items (6 original + 6 duplicates)
-  // Animate -50% so it loops seamlessly
-  gsap.to(track, {
-    x       : '-50%',
-    duration: 22,
-    ease    : 'none',
-    repeat  : -1,
-  });
+  gsap.to(track, { x: '-50%', duration: 24, ease: 'none', repeat: -1 });
 }
 
 /* ─────────────────────────────────────────────
-   9. PARALLAX EFFECTS
-   Benefits bottle + hero background orbs
+   9. PARALLAX
    ───────────────────────────────────────────── */
 function initParallax() {
-  // Benefits bottle parallax
-  gsap.to('.benefits-bottle-3d', {
-    y: -70,
-    ease: 'none',
+  // Parallax on WRAPPER — keeps CSS float animation on the img itself
+  // separate from GSAP scroll-driven y, preventing transform conflict
+  gsap.to('.b-bottle-wrap', {
+    y: -50, ease: 'none',
     scrollTrigger: {
-      trigger : '.benefits',
-      start   : 'top bottom',
-      end     : 'bottom top',
-      scrub   : true,
+      trigger: '.benefits',
+      start: 'top bottom', end: 'bottom top', scrub: true
     }
   });
 
-  // Hero orbs slow drift on scroll
-  gsap.to('.orb-1', {
-    y: -120,
-    ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-  });
-  gsap.to('.orb-2', {
-    y: -70,
-    ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-  });
-  gsap.to('.orb-3', {
-    y: -50,
-    ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
-  });
-}
-
-/* ─────────────────────────────────────────────
-   10. HERO BOTTLE SCROLL PARALLAX
-   Bottle drifts upward as hero scrolls out
-   Adds extra 3D depth to the entrance section
-   ───────────────────────────────────────────── */
-function initHeroBottleParallax() {
-  gsap.to('.bottle-float', {
-    y      : -80,
-    rotateZ: 8,
-    ease   : 'none',
+  gsap.to('.about-bottle-img', {
+    rotateZ: 4, y: -30, ease: 'none',
     scrollTrigger: {
-      trigger : '.hero',
-      start   : 'top top',
-      end     : 'bottom top',
-      scrub   : true,
+      trigger: '.about-strip',
+      start: 'top bottom', end: 'bottom top', scrub: true
     }
   });
 }
 
 /* ─────────────────────────────────────────────
-   11. CTA SECTION REVEAL (scale + fade)
-   Extra dramatic entrance for final CTA
+   10. HERO BOTTLE SCROLL EFFECT
    ───────────────────────────────────────────── */
-function initCtaReveal() {
-  gsap.fromTo('.cta-heading', {
-    scale  : 0.9,
-    opacity: 0,
-    y      : 40,
-  }, {
-    scale : 1,
-    opacity: 1,
-    y     : 0,
-    duration: 1,
-    ease : 'power3.out',
+function initHeroScroll() {
+  // Scroll parallax on wrapper so CSS float on .hero-bottle-img is not overridden
+  gsap.to('.hero-bottle-wrap', {
+    y: -60, ease: 'none',
     scrollTrigger: {
-      trigger      : '.cta-section',
-      start        : 'top 70%',
-      toggleActions: 'play none none reverse',
+      trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true
+    }
+  });
+}
+
+function initBottleFloat() {
+  // GSAP-driven float replaces CSS @keyframes heroFloat to avoid
+  // transform conflicts when GSAP also controls y on the same element
+  gsap.to('.hero-bottle-img', {
+    y: -18, duration: 3, ease: 'sine.inOut', repeat: -1, yoyo: true
+  });
+  gsap.to('.benefits-bottle-img', {
+    y: -14, duration: 3.5, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.4
+  });
+}
+
+/* ─────────────────────────────────────────────
+   11. CTA BOTTLES — staggered scale-in
+   ───────────────────────────────────────────── */
+function initCtaBottles() {
+  const bottles = document.querySelectorAll('.cta-bottle-small');
+  bottles.forEach((b, i) => {
+    gsap.fromTo(b,
+      { scale: 0.7, opacity: 0, y: 30 },
+      {
+        scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'back.out(1.5)',
+        delay: i * 0.1,
+        scrollTrigger: {
+          trigger: '.cta-section', start: 'top 70%', toggleActions: 'play none none reverse'
+        }
+      }
+    );
+  });
+}
+
+/* ─────────────────────────────────────────────
+   UPGRADE 3 — PRODUCTS HORIZONTAL SCROLL
+   Pin the section; scrub translates cards left.
+   ───────────────────────────────────────────── */
+function initHorizontalScroll() {
+  const track  = document.querySelector('.cards-track');
+  const pinSec = document.querySelector('.products');
+  if (!track || !pinSec) return;
+
+  gsap.to(track, {
+    x    : () => -(track.scrollWidth - window.innerWidth + 96),
+    ease : 'none',
+    scrollTrigger: {
+      trigger      : pinSec,
+      start        : 'top top',
+      end          : () => '+=' + (track.scrollWidth - window.innerWidth + 96),
+      pin          : true,
+      scrub        : 1,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
     }
   });
 }
 
 /* ─────────────────────────────────────────────
-   INIT ALL
+   UPGRADE 4 — SECTION HEADING WORD REVEAL
+   Splits .word-split h2s into word spans,
+   each slides up through overflow:hidden clip.
    ───────────────────────────────────────────── */
-window.addEventListener('DOMContentLoaded', () => {
-  // Initialize everything except hero (waits for loader)
-  initLoader();
-  initNavbar();
-  initAleglaSection();
-  initReveal();
-  initCardTilt();
-  initCounters();
-  initMarquee();
-  initParallax();
-  initHeroBottleParallax();
-  initCtaReveal();
+function initHeadingReveal() {
+  document.querySelectorAll('.word-split').forEach(h2 => {
+    const words = h2.textContent.trim().split(/\s+/);
+    h2.innerHTML = words.map(w =>
+      `<span class="word-wrap"><span class="word">${w}</span></span>`
+    ).join(' ');
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', (e) => {
-      const target = document.querySelector(anchor.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
+    gsap.from(h2.querySelectorAll('.word'), {
+      y        : '105%',
+      opacity  : 0,
+      stagger  : 0.07,
+      duration : 0.72,
+      ease     : 'power3.out',
+      scrollTrigger: {
+        trigger      : h2,
+        start        : 'top 88%',
+        toggleActions: 'play none none reverse',
       }
     });
   });
+}
 
-  // Refresh ScrollTrigger after all layout is settled
-  window.addEventListener('load', () => ScrollTrigger.refresh());
+/* ─────────────────────────────────────────────
+   SMOOTH ANCHOR SCROLL
+   ───────────────────────────────────────────── */
+function initAnchors() {
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === '#') return;
+    a.addEventListener('click', e => {
+      const el = document.querySelector(href);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+}
+
+/* ─────────────────────────────────────────────
+   INIT
+   ───────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  initSmoothScroll();   // UPGRADE 1 — must be first
+  initLoader();         // UPGRADE 5 — fires hero entrance on complete
+  initNavbar();
+  initAleglaSection();
+  initCardTilt();
+  initReveal();
+  initCounters();
+  initMarquee();
+  initParallax();
+  initHeroScroll();
+  initCtaBottles();
+  initBottleFloat();      // GSAP float (no CSS animation conflict)
+  initHorizontalScroll(); // UPGRADE 3
+  initHeadingReveal();    // UPGRADE 4
+  initAnchors();
+
+  window.addEventListener('load', () => {
+    ScrollTrigger.refresh();
+  });
 });
