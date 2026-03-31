@@ -166,11 +166,8 @@ h3 { font-family: 'Space Grotesk', sans-serif;
   content: ''; width: 28px; height: 1.5px; background: var(--gold2); flex-shrink: 0;
 }
 
-/* Hero words — same KMBCH pattern:
-   starts translate3d(40px,0,0) opacity:0 → animates in */
+/* Hero words — initial state set by GSAP in initHeroEntrance() */
 .hero-in {
-  opacity: 0;
-  transform: translate3d(40px, 0, 0);
   will-change: transform, opacity;
 }
 .hero-title {

@@ -61,12 +61,19 @@ function initHeroEntrance() {
     ).join('');
   });
 
+  // Set explicit initial states (GSAP owns the state — no CSS opacity:0 conflict)
+  gsap.set('.hero-eyebrow',    { opacity: 0, y: 24 });
+  gsap.set('.ch',              { opacity: 0, y: 90 });
+  gsap.set('.hero-sub',        { opacity: 0, y: 24 });
+  gsap.set('.hero-actions',    { opacity: 0, y: 24 });
+  gsap.set('.hero-bottle-wrap',{ opacity: 0, scale: 0.82 });
+
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-  tl.from('.hero-eyebrow',    { y: 24, opacity: 0, duration: 0.55 })
-    .from('.ch',              { y: 90, opacity: 0, stagger: 0.022, duration: 0.65 }, '-=0.25')
-    .from('.hero-sub',        { y: 24, opacity: 0, duration: 0.55 }, '-=0.35')
-    .from('.hero-actions',    { y: 24, opacity: 0, duration: 0.5  }, '-=0.3')
-    .from('.hero-bottle-wrap',{ scale: 0.82, opacity: 0, duration: 1.1, ease: 'power2.out' }, '-=0.9');
+  tl.to('.hero-eyebrow',    { y: 0, opacity: 1, duration: 0.55 })
+    .to('.ch',              { y: 0, opacity: 1, stagger: 0.022, duration: 0.65 }, '-=0.25')
+    .to('.hero-sub',        { y: 0, opacity: 1, duration: 0.55 }, '-=0.35')
+    .to('.hero-actions',    { y: 0, opacity: 1, duration: 0.5  }, '-=0.3')
+    .to('.hero-bottle-wrap',{ scale: 1, opacity: 1, duration: 1.1, ease: 'power2.out' }, '-=0.9');
 }
 
 /* ─────────────────────────────────────────────
