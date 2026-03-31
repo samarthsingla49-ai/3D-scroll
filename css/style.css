@@ -569,3 +569,51 @@ img[src="assets/bottle.png"]::after {
   .reveal { opacity: 1 !important; transform: none !important; }
   .hero-in { opacity: 1 !important; transform: none !important; }
 }
+
+/* ══════════════════════════════════════════════
+   GSAP UPGRADES
+   ══════════════════════════════════════════════ */
+
+/* ─── Loader split panels (Upgrade 5) ─────── */
+.loader-panel-l,
+.loader-panel-r {
+  position: absolute; top: 0; bottom: 0; width: 50%;
+  background: var(--green); z-index: 1;
+}
+.loader-panel-l { left: 0; }
+.loader-panel-r { right: 0; }
+.loader-brand,
+.loader-track {
+  position: relative; z-index: 2;
+}
+
+/* ─── Split character spans (Upgrade 2) ───── */
+.ch {
+  display: inline-block;
+}
+
+/* ─── Word reveal spans (Upgrade 4) ─────── */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.25em;
+}
+.word {
+  display: inline-block;
+}
+
+/* ─── Products horizontal scroll (Upgrade 3) */
+.cards-grid {
+  overflow: hidden;
+  padding-bottom: 24px;
+}
+.cards-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+}
+.cards-track .product-card {
+  width: 340px;
+  flex-shrink: 0;
+}

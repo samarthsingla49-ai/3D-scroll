@@ -1,14 +1,12 @@
 /* ══════════════════════════════════════════════
-   ALEGLA — main.js  (Performance-optimised)
-   ══════════════════════════════════════════════
-   Performance fixes vs. previous version:
-   ✓ Removed per-card infinite RAF loops (was 3 loops at 60fps)
-   ✓ Removed SVG noise filter (was expensive repaint every frame)
-   ✓ Card tilt uses GSAP.to with overwrite:'auto' (handles lerp internally)
-   ✓ GSAP scrub: 1 (was 1.5 — less interpolation work)
-   ✓ ScrollTrigger.config fastScrollEnd for smoother scrub release
-   ✓ will-change only on elements actively animating
-   ✓ Reduced onUpdate calculations with early-out when progress unchanged
+   ALEGLA — main.js  (GSAP Enhanced)
+   ──────────────────────────────────────────────
+   GSAP Upgrades:
+   1. Lenis smooth scroll wired into ScrollTrigger
+   2. Hero title split-character entrance timeline
+   3. Products horizontal scroll (ScrollTrigger pin)
+   4. Section h2 word-clip reveal
+   5. Dramatic two-panel loader exit
    ══════════════════════════════════════════════ */
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,44 +14,59 @@ gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ fastScrollEnd: true, preventOverlaps: true });
 
 /* ─────────────────────────────────────────────
-   1. LOADER
+   UPGRADE 1 — LENIS SMOOTH SCROLL
+   Feeds Lenis ticks into GSAP's RAF so
+   ScrollTrigger positions stay accurate.
+   ───────────────────────────────────────────── */
+function initSmoothScroll() {
+  if (typeof Lenis === 'undefined') return;
+  const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+  lenis.on('scroll', ScrollTrigger.update);
+}
+
+/* ─────────────────────────────────────────────
+   UPGRADE 5 — LOADER (two-panel split exit)
    ───────────────────────────────────────────── */
 function initLoader() {
   const loader = document.getElementById('loader');
   const fill   = document.getElementById('loaderFill');
 
-  gsap.to(fill, {
-    scaleX: 1, duration: 1.3, ease: 'power2.inOut',
+  const tl = gsap.timeline({
     onComplete() {
-      gsap.to(loader, {
-        yPercent: -100, duration: 0.65, ease: 'power3.in',
-        onComplete() {
-          loader.remove();
-          document.body.classList.remove('is-loading');
-          initHeroEntrance();
-          initAleglaTag();
-        }
-      });
+      loader.remove();
+      document.body.classList.remove('is-loading');
+      initHeroEntrance();
+      initAleglaTag();
     }
   });
+
+  tl.to(fill, { scaleX: 1, duration: 1.2, ease: 'power2.inOut' })
+    .to('.loader-panel-l', { xPercent: -100, duration: 0.7, ease: 'power3.in' }, '+=0.05')
+    .to('.loader-panel-r', { xPercent:  100, duration: 0.7, ease: 'power3.in' }, '<');
 }
 
 /* ─────────────────────────────────────────────
-   2. HERO ENTRANCE
-   KMBCH pattern: translate3d(40px,0,0) opacity:0
-   → translate3d(0,0,0) opacity:1, staggered per word
+   UPGRADE 2 — HERO SPLIT-CHARACTER ENTRANCE
+   Each word span is split into .ch character
+   spans, then animated with a staggered timeline.
    ───────────────────────────────────────────── */
 function initHeroEntrance() {
-  const els = [...document.querySelectorAll('.hero-in')].sort((a, b) =>
-    (parseInt(a.style.getPropertyValue('--i')) || 0) -
-    (parseInt(b.style.getPropertyValue('--i')) || 0)
-  );
-
-  gsap.to(els, {
-    x: 0, opacity: 1,
-    transform: 'translate3d(0,0,0)',
-    stagger: 0.1, duration: 0.9, ease: 'power3.out',
+  // Split each .hero-word span into individual character spans
+  document.querySelectorAll('.hero-word').forEach(el => {
+    const text = el.textContent;
+    el.innerHTML = [...text].map(c =>
+      `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`
+    ).join('');
   });
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  tl.from('.hero-eyebrow',    { y: 24, opacity: 0, duration: 0.55 })
+    .from('.ch',              { y: 90, opacity: 0, stagger: 0.022, duration: 0.65 }, '-=0.25')
+    .from('.hero-sub',        { y: 24, opacity: 0, duration: 0.55 }, '-=0.35')
+    .from('.hero-actions',    { y: 24, opacity: 0, duration: 0.5  }, '-=0.3')
+    .from('.hero-bottle-wrap',{ scale: 0.82, opacity: 0, duration: 1.1, ease: 'power2.out' }, '-=0.9');
 }
 
 /* ─────────────────────────────────────────────
@@ -69,12 +82,6 @@ function initNavbar() {
 
 /* ─────────────────────────────────────────────
    4. ALEGLA LETTERS SCROLL SECTION
-   ────────────────────────────────────────────
-   Sticky 550vh section. On scroll:
-   • Each letter color fills from bottom (clip-path)
-   • Bottle rises up inside the letter column
-   • Flavor label fades in
-   Stagger: each letter starts at a different scroll %
    ───────────────────────────────────────────── */
 function initAleglaSection() {
   const wrapper  = document.querySelector('.alegla-scroll');
@@ -83,9 +90,8 @@ function initAleglaSection() {
   const progress = document.getElementById('aleglaProgress');
   if (!wrapper || !pin) return;
 
-  const STEP = 0.14;      // spacing between each letter's activation
-  const DUR  = 0.25;      // scroll % each letter uses to fully reveal
-
+  const STEP = 0.14;
+  const DUR  = 0.25;
   let lastP = -1;
 
   ScrollTrigger.create({
@@ -93,14 +99,12 @@ function initAleglaSection() {
     start   : 'top top',
     end     : 'bottom bottom',
     pin     : pin,
-    scrub   : 1,           // smooth but not over-interpolated
+    scrub   : 1,
     onUpdate(self) {
       const p = self.progress;
-      // Skip redundant updates — saves CPU on tiny scroll deltas
       if (Math.abs(p - lastP) < 0.0005) return;
       lastP = p;
 
-      // Progress bar
       progress.style.transform = `scaleX(${p.toFixed(4)})`;
 
       cols.forEach((col, i) => {
@@ -113,27 +117,21 @@ function initAleglaSection() {
         const info   = col.querySelector('.l-info');
         const ghost  = col.querySelector('.l-ghost');
 
-        // Liquid fill: clip from bottom → top
-        // inset(0 0 X% 0): X=100 = hidden, X=0 = fully shown
         fill.style.clipPath = `inset(0 0 ${((1 - lp) * 100).toFixed(2)}% 0)`;
 
-        // Glow on fill text when active
         if (lp > 0.05) {
           fill.style.filter = `drop-shadow(0 0 ${(lp * 20).toFixed(1)}px currentColor)`;
         } else {
           fill.style.filter = 'none';
         }
 
-        // Bottle rises — starts at 130% below, ends at 8% from bottom
         const by = (1 - lp) * 130 + lp * 8;
         bottle.style.transform = `translateX(-50%) translateY(${by.toFixed(2)}%)`;
         bottle.style.opacity   = Math.min(1, lp * 1.8).toFixed(3);
 
-        // Label
         info.style.opacity   = lp.toFixed(3);
         info.style.transform = `translateY(${((1 - lp) * 14).toFixed(2)}px)`;
 
-        // Subtle letter scale
         ghost.style.transform = `scale(${(1 + lp * 0.04).toFixed(4)})`;
       });
     }
@@ -153,16 +151,9 @@ function initAleglaTag() {
 
 /* ─────────────────────────────────────────────
    5. PRODUCT CARD 3D TILT
-   Uses GSAP (not a RAF loop) for proper lerp.
-   GSAP handles its own RAF internally — much
-   more efficient than manual loops per card.
    ───────────────────────────────────────────── */
 function initCardTilt() {
   document.querySelectorAll('.product-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      card.style.transition = 'border-color .3s ease, box-shadow .3s ease';
-    });
-
     card.addEventListener('mousemove', (e) => {
       const r = card.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width  - 0.5;
@@ -188,7 +179,6 @@ function initCardTilt() {
 
 /* ─────────────────────────────────────────────
    6. SCROLL REVEALS
-   All .reveal elements slide up + fade in
    ───────────────────────────────────────────── */
 function initReveal() {
   document.querySelectorAll('.reveal').forEach(el => {
@@ -229,16 +219,13 @@ function initCounters() {
 function initMarquee() {
   const track = document.getElementById('marqueeTrack');
   if (!track) return;
-  // Track has 12 items (6 + 6 duplicate), animate -50% for seamless loop
   gsap.to(track, { x: '-50%', duration: 24, ease: 'none', repeat: -1 });
 }
 
 /* ─────────────────────────────────────────────
-   9. PARALLAX (light — scrub only on scroll)
-   Only 2 elements parallax to keep it fast
+   9. PARALLAX
    ───────────────────────────────────────────── */
 function initParallax() {
-  // Benefits bottle drifts slightly upward
   gsap.to('.benefits-bottle-img', {
     y: -50, ease: 'none',
     scrollTrigger: {
@@ -247,7 +234,6 @@ function initParallax() {
     }
   });
 
-  // About section bottle slight rotation on scroll
   gsap.to('.about-bottle-img', {
     rotateZ: 4, y: -30, ease: 'none',
     scrollTrigger: {
@@ -259,7 +245,6 @@ function initParallax() {
 
 /* ─────────────────────────────────────────────
    10. HERO BOTTLE SCROLL EFFECT
-   Bottle lifts as hero scrolls out of view
    ───────────────────────────────────────────── */
 function initHeroScroll() {
   gsap.to('.hero-bottle-img', {
@@ -290,6 +275,57 @@ function initCtaBottles() {
 }
 
 /* ─────────────────────────────────────────────
+   UPGRADE 3 — PRODUCTS HORIZONTAL SCROLL
+   Pin the section; scrub translates cards left.
+   ───────────────────────────────────────────── */
+function initHorizontalScroll() {
+  const track  = document.querySelector('.cards-track');
+  const pinSec = document.querySelector('.products');
+  if (!track || !pinSec) return;
+
+  gsap.to(track, {
+    x    : () => -(track.scrollWidth - window.innerWidth + 96),
+    ease : 'none',
+    scrollTrigger: {
+      trigger      : pinSec,
+      start        : 'top top',
+      end          : () => '+=' + (track.scrollWidth - window.innerWidth + 96),
+      pin          : true,
+      scrub        : 1,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    }
+  });
+}
+
+/* ─────────────────────────────────────────────
+   UPGRADE 4 — SECTION HEADING WORD REVEAL
+   Splits .word-split h2s into word spans,
+   each slides up through overflow:hidden clip.
+   ───────────────────────────────────────────── */
+function initHeadingReveal() {
+  document.querySelectorAll('.word-split').forEach(h2 => {
+    const words = h2.textContent.trim().split(/\s+/);
+    h2.innerHTML = words.map(w =>
+      `<span class="word-wrap"><span class="word">${w}</span></span>`
+    ).join(' ');
+
+    gsap.from(h2.querySelectorAll('.word'), {
+      y        : '105%',
+      opacity  : 0,
+      stagger  : 0.07,
+      duration : 0.72,
+      ease     : 'power3.out',
+      scrollTrigger: {
+        trigger      : h2,
+        start        : 'top 88%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+  });
+}
+
+/* ─────────────────────────────────────────────
    SMOOTH ANCHOR SCROLL
    ───────────────────────────────────────────── */
 function initAnchors() {
@@ -307,7 +343,8 @@ function initAnchors() {
    INIT
    ───────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  initLoader();     // fires hero entrance on complete
+  initSmoothScroll();   // UPGRADE 1 — must be first
+  initLoader();         // UPGRADE 5 — fires hero entrance on complete
   initNavbar();
   initAleglaSection();
   initCardTilt();
@@ -317,9 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initParallax();
   initHeroScroll();
   initCtaBottles();
+  initHorizontalScroll(); // UPGRADE 3
+  initHeadingReveal();    // UPGRADE 4
   initAnchors();
 
-  // Recalculate positions after all images load
   window.addEventListener('load', () => {
     ScrollTrigger.refresh();
   });

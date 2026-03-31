@@ -13,6 +13,8 @@
 
   <!-- ══ LOADER ═══════════════════════════════ -->
   <div class="loader" id="loader">
+    <div class="loader-panel-l"></div>
+    <div class="loader-panel-r"></div>
     <div class="loader-brand">Alegla</div>
     <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
   </div>
@@ -35,9 +37,9 @@
     <div class="hero-left">
       <p class="hero-eyebrow hero-in" style="--i:0">Est. 2023 · Premium Brew</p>
       <h1 class="hero-title">
-        <span class="hero-in" style="--i:1">Taste the</span><br/>
-        <em class="hero-in" style="--i:2">Pure</em>
-        <span class="hero-in" style="--i:3"> Difference.</span>
+        <span class="hero-in hero-word" style="--i:1">Taste the</span><br/>
+        <em class="hero-in hero-word" style="--i:2">Pure</em>
+        <span class="hero-in hero-word" style="--i:3"> Difference.</span>
       </h1>
       <p class="hero-sub hero-in" style="--i:4">
         Handcrafted non-alcoholic kombucha brewed with premium organic ingredients.
@@ -204,7 +206,7 @@
       </div>
       <div class="about-strip-text">
         <p class="tag reveal">Our Commitment</p>
-        <h2 class="reveal">Brewed with care,<br/>bottled with purpose.</h2>
+        <h2 class="reveal word-split">Brewed with care, bottled with purpose.</h2>
         <p class="reveal">
           Every Alegla bottle starts with certified organic ingredients, traditional
           fermentation, and zero compromises. What you taste is exactly what nature intended —
@@ -227,13 +229,14 @@
     <div class="container">
       <div class="section-head">
         <p class="tag reveal">Our Collection</p>
-        <h2 class="reveal">The Alegla Set</h2>
+        <h2 class="reveal word-split">The Alegla Set</h2>
         <p class="section-desc reveal">Six flavors. One obsession. Perfect for every occasion.</p>
       </div>
 
       <div class="cards-grid">
+      <div class="cards-track">
 
-        <div class="product-card reveal" data-delay="0">
+        <div class="product-card" data-delay="0">
           <div class="card-visual">
             <div class="card-bg-color" style="background:linear-gradient(160deg,#ede9fe 0%,#ddd6fe 100%)"></div>
             <img src="assets/bottle.png" alt="Arctic Berry" class="card-bottle-img" loading="lazy"/>
@@ -251,7 +254,7 @@
           </div>
         </div>
 
-        <div class="product-card reveal" data-delay="120">
+        <div class="product-card" data-delay="120">
           <div class="card-visual">
             <div class="card-bg-color" style="background:linear-gradient(160deg,#dcfce7 0%,#bbf7d0 100%)"></div>
             <img src="assets/bottle.png" alt="Lime Ginger" class="card-bottle-img" loading="lazy"/>
@@ -269,7 +272,7 @@
           </div>
         </div>
 
-        <div class="product-card reveal" data-delay="240">
+        <div class="product-card" data-delay="240">
           <div class="card-visual">
             <div class="card-bg-color" style="background:linear-gradient(160deg,#fef9c3 0%,#fde68a 100%)"></div>
             <img src="assets/bottle.png" alt="Elderflower" class="card-bottle-img" loading="lazy"/>
@@ -287,7 +290,7 @@
           </div>
         </div>
 
-        <div class="product-card reveal" data-delay="0">
+        <div class="product-card" data-delay="0">
           <div class="card-visual">
             <div class="card-bg-color" style="background:linear-gradient(160deg,#ffedd5 0%,#fed7aa 100%)"></div>
             <img src="assets/bottle.png" alt="Grapefruit" class="card-bottle-img" loading="lazy"/>
@@ -305,7 +308,7 @@
           </div>
         </div>
 
-        <div class="product-card reveal" data-delay="120">
+        <div class="product-card" data-delay="120">
           <div class="card-visual">
             <div class="card-bg-color" style="background:linear-gradient(160deg,#d1fae5 0%,#a7f3d0 100%)"></div>
             <img src="assets/bottle.png" alt="Lemon Mint" class="card-bottle-img" loading="lazy"/>
@@ -323,7 +326,7 @@
           </div>
         </div>
 
-        <div class="product-card reveal" data-delay="240">
+        <div class="product-card" data-delay="240">
           <div class="card-visual">
             <div class="card-bg-color" style="background:linear-gradient(160deg,#fce7f3 0%,#fbcfe8 100%)"></div>
             <img src="assets/bottle.png" alt="Apricot Rose" class="card-bottle-img" loading="lazy"/>
@@ -341,6 +344,7 @@
           </div>
         </div>
 
+      </div><!-- .cards-track -->
       </div><!-- .cards-grid -->
     </div>
   </section>
@@ -350,7 +354,7 @@
     <div class="container benefits-inner">
       <div class="benefits-text">
         <p class="tag reveal">Why Alegla</p>
-        <h2 class="reveal">Live Happy.<br/>Drink Healthy.</h2>
+        <h2 class="reveal word-split">Live Happy. Drink Healthy.</h2>
         <p class="reveal">Organic raw kombucha at its finest. No shortcuts, no artificial nonsense — just pure fermented goodness made to improve your day.</p>
         <div class="benefits-items">
           <div class="benefit-row reveal" data-delay="0">
@@ -457,6 +461,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
